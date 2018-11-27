@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="upper-box">
+
+
+    <mat-progress-spinner *ngIf="spinner" mode="indeterminate"></mat-progress-spinner>
+
+    <div class="box left-box mat-elevation-z10">
+      <h5>Settings</h5>
+      <div class="left-box-content">
+        <form [formGroup]="newChampForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" [formControlName]="'newChampName'" (blur)="changeForm()">
+          <div *ngIf="!newChampForm.get('newChampName').valid" class="alert alert-danger">
+            <span *ngIf="newChampForm.get('newChampName').errors['required']">Name is required!</span>
+            <span *ngIf="newChampForm.get('newChampName').errors['badName']">This name is in use!</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Format</label>
+          <select class="form-control" [formControlName]="'format'" (blur)="changeForm()">
+            <option *ngFor="let format of formats">{{ format }}</option>
+          </select>
+        </div>
+
+        <div [ngSwitch]="newChampForm.get('format').value">
+
+          <div *ngSwitchCase="'group'" class="form-group">
+            <div class="form-group">
+              <label>Number of groups: <b>{{ newChampForm.get('numberOfGroups').value }}</b></label>
+              <mat-slider [formControlName]="'numberOfGroups'" min="2" max="8" step="1" tickInterval="1" color="primary" (blur)="changeForm()"></mat-slider>
+              <div *ngIf="!newChampForm.get('numberOfGroups').valid"
+                   class="alert alert-danger">
+                There are too few players!
+              </div>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'big-round'">
+            <div class="form-group">
+              <label>Number of matches per player: <b>{{ newChampForm.get('numberOfMatches').value }}</b></label>
+              <mat-slider [formControlName]="'numberOfMatches'" min="2" max="6" step="1" tickInterval="1" color="primary" (blur)="changeForm()"></mat-slider>
+              <div *ngIf="!newChampForm.get('numberOfMatches').valid"
+                   class="alert alert-danger">
+                There are too few players!
+              </div>
+            </div>
+          </div>
+
+        <div class="form-group">
+          <label>Size of Playoff: <b>{{ newChampForm.get('sizeOfPlayoff').value }}</b></label>
+          <mat-slider [formControlName]="'sizeOfPlayoff'" min="0" max="16" step="2" tickInterval="2" color="primary" (blur)="changeForm()"></mat-slider>
+          <div *ngIf="!newChampForm.get('sizeOfPlayoff').valid"
+               class="alert alert-danger">
+            There are too few players!
+          </div>
+        </div>
+
+        </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="box middle-box mat-elevation-z10">
+      <h5>Players</h5>
+      <p id="number-of-players">Number of players: <b>{{ selectedPlayers.length }}</b></p>
+      <div class="make-scrollable">
+        <div *ngFor="let player of selectedPlayers" class="player-line">
+          <p>{{player.name}}</p>
+          <button mat-button (click)="discardPlayer(player)"><i class="material-icons">clear</i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="box right-box mat-elevation-z10">
+      <h5>Select players</h5>
+      <div id="search_add">
+        <input class="form-control" placeholder="Search or Add player" [(ngModel)]="searchPlayer">
+        <button mat-button (click)="addPlayer()"><i class="material-icons">add_box</i></button>
+      </div>
+      <div class="make-scrollable">
+        <div *ngFor="let player of filteredPlayers" class="player-line">
+            <p>{{player.name}}</p>
+            <button mat-button (click)="selectPlayer(player)"><i class="material-icons">add_box</i></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button type="submit" class="btn btn-success" id="start-button" [disabled]="newChampForm.invalid" (click)="onSubmit()">Create!</button>
+
+</div>
+

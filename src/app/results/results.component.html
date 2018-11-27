@@ -1,0 +1,5 @@
+<container [ngSwitch]="format">
+  <app-biground-results *ngSwitchCase="'big-round'" [champId]="champId"></app-biground-results>
+  <app-group-results *ngSwitchCase="'group'"></app-group-results>
+</container>
+

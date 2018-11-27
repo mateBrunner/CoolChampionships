@@ -1,0 +1,4 @@
+<container [ngSwitch]="format">
+  <app-biground-matches *ngSwitchCase="'big-round'" [champId]="champId"></app-biground-matches>
+  <app-group-matches *ngSwitchCase="'group'"></app-group-matches>
+</container>

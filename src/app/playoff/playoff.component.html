@@ -1,0 +1,44 @@
+<div class="container">
+
+  <div class="box mat-elevation-z10">
+    <div class="content">
+
+      <div *ngFor="let level of matchTable" class="level">
+
+        <div *ngFor="let match of level.matches" class="match"
+              [class.first-column]="level.level === 0"
+              [class.second-column]="level.level === 1"
+              [class.third-column]="level.level === 2"
+              [class.fourth-column]="level.level === 3"
+              [class.last-column]="level.level === lastLevel">
+          <div *ngIf="match.id != -1" (click)="open(match.player1, match.player2, match.id, match.point1, match.point2)">
+            <div class="player-row top-row">
+              <div class="ranking"><p *ngIf="rankings.indexOf(match.player1.id) != -1">{{ rankings.indexOf(match.player1.id) + 1 }}</p></div>
+              <div class="player-name top-name">
+                {{ match.player1.name }}
+              </div>
+              <div class="point top-point" [class.win]="match.point1 > match.point2"
+                                           [class.lose]="match.point1 < match.point2">{{ match.point1 }}</div>
+            </div>
+            <div class="player-row bottom-row">
+              <div class="ranking"><p *ngIf="rankings.indexOf(match.player2.id) != -1">{{ rankings.indexOf(match.player2.id) + 1 }}</p></div>
+              <div class="player-name bottom-name">
+                {{ match.player2.name }}
+              </div>
+              <div class="point bottom-point" [class.win]="match.point2 > match.point1"
+                                              [class.lose]="match.point2 < match.point1">{{ match.point2 }}</div>
+            </div>
+          </div>
+          <div *ngIf="match.id === -1" class="fake-match">
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>

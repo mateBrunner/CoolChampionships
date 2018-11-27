@@ -1,0 +1,40 @@
+.container {
+  height: 430px;
+  display: flex;
+  background-color: #e8e7e5;
+  padding: 10px;
+}
+
+.content {
+  min-width: 100%;
+  border: 2px solid dimgrey;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+h2 {
+  color: #253c65;
+  margin: 5px 10px;
+  border-bottom: 2px solid #253c65;
+}
+
+.body {
+  margin-top: 40px;
+  display: flex;
+}
+
+.left {
+  width: 50%;
+  padding-right: 10px;
+}
+
+.right {
+  width: 50%;
+}
+
+.right p {
+  margin-left: 40px;
+}
+
+.canvas {
+}

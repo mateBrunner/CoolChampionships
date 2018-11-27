@@ -1,0 +1,40 @@
+<div class="container">
+
+  <div class="content">
+
+    <h2>{{ playerStats.player.name }}</h2>
+    <p></p>
+    <p>Strength: <b style="font-size: 25px">{{ playerStats.player.elo }}</b></p>
+
+    <div class="body">
+      <div class="left">
+
+        <p>Most win in a row: <b>{{ playerStats.mostWinInRow }}</b></p>
+        <p>Most lose in a row: <b>{{ playerStats.mostLoseInRow }}</b></p>
+        <p>Most frequent opponent:
+          <b *ngIf="playerStats.mostPlayedPlayer">{{ playerStats.mostPlayedPlayer.name }} (W: {{ playerStats.wonAgainstMostPlayedPlayer }}, L: {{ playerStats.numberOfMatchesWithMostPlayedPlayer - playerStats.wonAgainstMostPlayedPlayer}})</b>
+          <b *ngIf="!playerStats.mostPlayedPlayer">-</b>
+        </p>
+        <p>First match:
+          <b *ngIf="playerStats.numberOfPlayedMatches === 0">-</b>
+          <b *ngIf="playerStats.numberOfPlayedMatches > 0">{{ playerStats.dateOfFirstMatch }}</b>
+        </p>
+        <p>Last match:
+          <b *ngIf="playerStats.numberOfPlayedMatches === 0">-</b>
+          <b *ngIf="playerStats.numberOfPlayedMatches > 0">{{ playerStats.dateOfLastMatch }}</b>
+        </p>
+
+      </div>
+      <div class="right">
+        <p>Played matches: <b>{{ playerStats.numberOfPlayedMatches }}</b></p>
+        <canvas id="dataCanvas" height="250">{{ dataChart }}</canvas>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+

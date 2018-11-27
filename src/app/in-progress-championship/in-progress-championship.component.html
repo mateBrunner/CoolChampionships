@@ -1,0 +1,10 @@
+<button id="matches-button" [class.selected]="page==='matches'" mat-icon-button routerLink="/championship/{{ champId }}/inprogress/matches" title="matches"><img src="assets/matches_1.png"></button>
+<button id="results-button" [class.selected]="page==='results'" mat-icon-button routerLink="/championship/{{ champId }}/inprogress/results" title="results"><img src="assets/results_1.png"></button>
+<button id="playoff-button" [class.selected]="page==='playoff'" mat-icon-button routerLink="/championship/{{ champId }}/inprogress/playoff" title="playoff"><img src="assets/playoff_2.png"></button>
+
+<button id="archive-button" mat-icon-button title="archivate" (click)="archivateChampionship()"><img src="assets/archive.png"></button>
+<button id="delete-button" mat-icon-button title="delete" (click)="deleteChampionship()"><img src="assets/delete.png"></button>
+
+
+<router-outlet></router-outlet>
+

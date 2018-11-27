@@ -1,0 +1,24 @@
+<div class="container">
+
+  <div class="top-row">
+    <h5 class="in-row name name1">{{ player1.name }}</h5>
+    <form [formGroup]="resultForm">
+    <input type="text" [formControlName]="'point1'" class="in-row form-control"
+           (keydown.enter)="resultForm.valid && save()"
+           (keyup)="resultForm.controls['point1'].valid && input2.select()">
+    <h5 class="in-row">:</h5>
+    <input type="text" #input2 [formControlName]="'point2'" class="in-row form-control"
+           (keydown.enter)="resultForm.valid && save()">
+    </form>
+    <h5 class="in-row name">{{ player2.name }}</h5>
+  </div>
+  <div class="bottom-row">
+    <div class="buttons">
+      <button (click)="save()" class="btn btn-success" [disabled]="resultForm.invalid">Save</button>
+      <button (click)="delete()" class="btn btn-alert">Delete</button>
+    </div>
+  </div>
+
+</div>
+
+

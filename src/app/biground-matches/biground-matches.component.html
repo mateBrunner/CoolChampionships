@@ -1,0 +1,49 @@
+<div class="container">
+
+  <div class="box mat-elevation-z10">
+    <div class="content">
+
+      <table mat-table [dataSource]="matchTable" class="mat-elevation-z0">
+
+        <ng-container matColumnDef="player" sticky>
+          <td mat-cell *matCellDef="let row" class="player-column" (click)="openPlayerModal(row.player.id)"><div class="player">{{ row.player.name }}</div></td>
+        </ng-container>
+
+        <ng-container matColumnDef="opponents">
+          <td mat-cell *matCellDef="let row ">
+
+            <div class="opponents-row">
+              <div *ngFor="let opponent of row.opponents" class="opponent">
+                <div class="opponent">
+                  <div class="opponent-data">
+                    <div class="opponent-name">{{ opponent.name }}</div>
+                    <div *ngIf="opponent.pointOwn !== 0 || opponent.pointOpp !== 0" class="result">
+                      <p class="point" [class.won]="opponent.pointOwn > opponent.pointOpp"
+                         [class.lose]="opponent.pointOwn < opponent.pointOpp">
+                        {{opponent.pointOwn}}
+                      </p>
+                      <p><b style="white-space: pre"> - </b></p>
+                      <p class="point" [class.won]="opponent.pointOwn > opponent.pointOpp"
+                         [class.lose]="opponent.pointOwn < opponent.pointOpp">
+                        {{opponent.pointOpp}}
+                      </p>
+                    </div>
+                    <div *ngIf="opponent.pointOwn === 0 && opponent.pointOpp === 0" class="result-placeholder"></div>
+                    <div class="edit-points">
+                      <div (click)="openResultModal(row.player, getPlayerFromOpponent(opponent), opponent.matchId, opponent.pointOwn, opponent.pointOpp)"><i class="material-icons">edit</i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </div>
+  </div>
+
+</div>

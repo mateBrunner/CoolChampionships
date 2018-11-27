@@ -1,0 +1,173 @@
+.container {
+  min-height: 100%;
+  min-width: 100%;
+  padding: 15px 110px 5px 30px;
+}
+
+.box {
+  min-height: 100%;
+  max-height: 560px;
+  max-width: 100%;
+  margin: 5px;
+  float: left;
+  background-color: #e8e7e5;
+  position: relative;
+}
+
+.content {
+  min-height: 100%;
+  max-height: 540px;
+  margin: 10px;
+  padding: 0px;
+  border: 2px solid dimgray;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  overflow-y: scroll;
+}
+
+.level {
+  display: block;
+  padding: 20px 20px;
+  width: 250px;
+  height: 100%;
+}
+
+.match {
+  margin: 20px 0px;
+}
+
+.match:hover {
+  transform: translateX(3px) translateY(3px);
+  cursor: pointer;
+}
+
+.player-row {
+  height: 30px;
+  display: flex;
+  font-weight: bold;
+}
+
+.top-row {
+  /*border-bottom: 2px solid #e8e7e5; */
+}
+
+.ranking {
+  width: 30px;
+  padding-top:4px;
+  background-color: #253c65;
+  color: white;
+  border-radius: 17px 0px 0px 17px;
+  text-align: center;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.player-name {
+  width: 170px;
+  padding: 2px 0px 0px 5px;
+  background-image: linear-gradient(to right bottom, gainsboro, grey);
+  box-shadow: 20px 21px 20px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.top-name {
+  border-top: 2px solid dimgrey;
+}
+
+.bottom-name {
+  border-bottom: 2px solid dimgrey;
+}
+
+.point {
+  width: 30px;
+  padding-top: 2px;
+  text-align: center;
+  font-size: 17px;
+  background-color: gainsboro;
+}
+
+.win {
+  color: darkgreen;
+}
+
+.lose {
+  color: darkred;
+}
+
+.top-point {
+  border-top: 2px solid dimgrey;
+  border-right: 2px solid dimgrey;
+  border-bottom: 1px solid darkgray;
+  border-radius: 0 10px 0 0;
+}
+
+.bottom-point {
+  border-right: 2px solid dimgrey;
+  border-bottom: 2px solid dimgrey;
+  border-radius: 0 0 10px 0;
+}
+
+.first-column {
+  margin: 0 0 10px 0;
+}
+
+.second-column:first-child {
+  margin-top: 35px;
+}
+
+.second-column {
+  margin: 0 0 80px 0;
+}
+
+.third-column:first-child {
+  margin-top: 105px;
+}
+
+.third-column {
+  margin: 0 0 220px 0;
+}
+
+.fourth-column {
+  margin-top: 245px;
+}
+
+.last-column:first-child {
+  margin-bottom: 10px!important;
+}
+
+.last-column:last-child {
+  margin-top: 0px!important;
+}
+
+.last-column:last-child .player-name {
+  background-image: linear-gradient(to right bottom, beige, #CF482E);
+}
+
+.last-column:first-child .player-name {
+  background-image: linear-gradient(to right bottom, beige, #DAA520);
+}
+
+.match:last-child {
+  margin-bottom: 0px !important;
+}
+
+.fake-match {
+  height: 60px;
+}
+
+
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: darkblue;
+  border-radius: 20px;
+}

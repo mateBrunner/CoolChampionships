@@ -1,0 +1,71 @@
+.container {
+  max-width: 100%;
+  min-height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+mat-toolbar {
+  padding: 2px;
+  height: 50px;
+  display: flex;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  justify-content: space-between;
+  -webkit-box-shadow: 0 8px 6px -6px black;
+  -moz-box-shadow: 0 8px 6px -6px black;
+  box-shadow: 0 8px 6px -6px black;
+  z-index: 5;
+  background-color: #253c65 !important;
+}
+
+.placeholder {
+  height: 50px;
+}
+
+#navbar_left {
+  display: flex;
+}
+
+#navbar_championships, #new_championship_button {
+  display: inline-block;
+}
+
+#new_champ_button {
+  height: 30px;
+  line-height: 30px;
+  min-width: 30px !important;
+  border-radius: 100%;
+  font-size: 25px;
+  padding: 0;
+  margin: 5px;
+  position: relative;
+  top: -1px;
+}
+
+#new_champ_button i {
+  font-size: 33px;
+}
+
+#new_champ_button i:hover {
+  color: #dfe1fb;
+}
+
+.champ_button {
+  margin: 5px;
+  height: 30px;
+  line-height: 30px;
+  border: 0px solid black;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+.is-selected {
+  background-color: #dfe1fb !important;
+  color: black;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}

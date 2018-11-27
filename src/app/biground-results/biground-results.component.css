@@ -1,0 +1,144 @@
+.container {
+  min-height: 100%;
+  min-width: 100%;
+  position: relative;
+}
+
+.inner-container {
+  position: absolute;
+  top: 15px;
+  right: 120px;
+  left: 30px;
+}
+
+.box {
+  min-height: 100%;
+  max-height: 560px;
+  max-width: 100%;
+  margin: 5px auto;
+  display: table;
+  background-color: #e8e7e5;
+  position: relative;
+}
+
+.content {
+  min-height: 100%;
+  max-height: 540px;
+  margin: 10px;
+  padding: 0px;
+  border: 2px solid dimgray;
+  border-radius: 10px;
+  position: relative;
+}
+
+table {
+  display: block;
+  min-height: 100%;
+  max-height: 535px;
+  overflow-y: scroll;
+  background-color: #e8e7e5;
+  border-radius: 10px !important;
+}
+
+table td {
+  padding: 5px;
+}
+
+table tr {
+  height: 30px;
+  padding: 0px;
+  border-bottom: 2px solid #e8e7e5;
+}
+
+table tr:nth-child(even) {
+  background-color: gainsboro;
+}
+
+table tr:nth-child(odd) {
+  background-color: lightgray;
+}
+
+
+
+.blank-cell {
+  border-bottom: 2px solid dimgrey;
+}
+
+.header {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  color: black;
+  border-left: 2px solid dimgrey;
+  border-bottom: 3px solid #253c65;
+  padding: 0px 5px!important;
+  box-shadow: 20px 21px 20px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-image: linear-gradient(to top right, gainsboro, grey);
+}
+
+.ranking-column {
+  width: 30px;
+  background-color: #253c65;
+  color: white;
+  border-radius: 17px 0px 0px 17px;
+  border-bottom: 2px #e8e7e5 solid;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.player-column {
+  width: 170px;
+  border-right: 3px solid #253c65;
+  border-bottom: 2px #e8e7e5 solid;
+  box-shadow: 20px 21px 20px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-image: linear-gradient(to right bottom, gainsboro, grey);
+}
+
+.playoff {
+  border-bottom: 3px red solid!important;
+}
+
+.player {
+  font-weight: bold;
+}
+
+
+.data {
+  width: 60px;
+  padding: 0px 5px !important;
+  font-size: 16px;
+  text-align: center;
+}
+
+.data:not(:last-child) {
+  border-right: 2px solid dimgray;
+}
+
+.wonmatch {
+  font-weight: bold;
+}
+
+.aveopp {
+  width: 90px;
+}
+
+._data {
+  max-height: 25px;
+}
+
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: darkblue;
+  border-radius: 40px;
+}
