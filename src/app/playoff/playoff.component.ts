@@ -27,9 +27,7 @@ export class PlayoffComponent implements OnInit, OnDestroy {
               private sharedService: SharedService,
               private router: Router,
               private matchesService: MatchesService) {
-    console.log('playoff constructor');
     this.champId = +this.router.url.split('/')[2];
-
     this.subscription = this.sharedService.getMatchEdit().subscribe(result =>
       this.saveResult(result)
     );
@@ -40,13 +38,8 @@ export class PlayoffComponent implements OnInit, OnDestroy {
 
     this.matchSubscription = this.matchesService.getPlayoff(this.champId).subscribe( data => {
 
-      let tempMatchTable: PlayoffLevel[] = []
-      console.log(tempMatchTable)
-      console.log('init');
-      console.log(data);
-
+      let tempMatchTable: PlayoffLevel[] = [];
       this.matchTable = null;
-
       const matches = data['matches'];
       this.rankings = data['rankings'];
       this.sizeOfPlayoff = matches.length;
@@ -57,10 +50,8 @@ export class PlayoffComponent implements OnInit, OnDestroy {
 
       let i = 0;
       let matchArray;
-      console.log(numberOfLevels);
       while (i < numberOfLevels) {
         matchArray = [];
-        console.log('push');
         tempMatchTable.push(new PlayoffLevel(i, matchArray));
         i++;
       }
@@ -71,19 +62,17 @@ export class PlayoffComponent implements OnInit, OnDestroy {
       let nextRow = -1;
       let lastRow = 0;
       let match: Match;
-      const fakePlayer = new Player(-1, null, -1);
+      const fakePlayer = new Participant(-1, null, -1);
       const fakeMatch = new Match(-1,  fakePlayer, fakePlayer, null, null);
 
       for (const poMatch of matches) {
-        console.log('********--')
         match = poMatch['match'];
-        if (match.player1 === null) {
-          match.player1 = fakePlayer;
+        if (match.participant1 === null) {
+          match.participant1 = fakePlayer;
         }
-        if (match.player2 === null) {
-          match.player2 = fakePlayer;
+        if (match.participant2 === null) {
+          match.participant2 = fakePlayer;
         }
-
         nextRow++;
         if (poMatch['row'] > lastRow) {
           while (nextRow < poMatch['row']) {
@@ -94,21 +83,13 @@ export class PlayoffComponent implements OnInit, OnDestroy {
           nextRow = 0;
         }
         lastRow = poMatch['row'];
-
         tempMatchTable[poMatch['level'] - firstLevel].matches.push(match);
       }
-
-
       this.matchTable = tempMatchTable;
     });
   }
 
-
-  getRankings(level: number, row: number): number[] {
-    return [0, 0];
-  }
-
-  open(player1: Player, player2: Player, matchId: number, point1: number, point2: number) {
+  open(player1: Participant, player2: Participant, matchId: number, point1: number, point2: number) {
     if (player1.name != null && player2.name != null) {
       const modalRef = this.modalService.open(MatchResultModalComponent).componentInstance;
       modalRef.player1 = player1;
@@ -120,12 +101,8 @@ export class PlayoffComponent implements OnInit, OnDestroy {
   }
 
   saveResult(result: Result) {
-
-    console.log(result)
     let poResult: PlayoffResult;
-    poResult = new PlayoffResult(this.champId, result)
-    console.log(poResult)
-
+    poResult = new PlayoffResult(this.champId, result);
     this.matchesService.savePlayoffMatch(poResult).subscribe(response =>
       this.ngOnInit()
     );
@@ -140,7 +117,7 @@ export class PlayoffComponent implements OnInit, OnDestroy {
 
 }
 
-class Player {
+class Participant {
 
   constructor(
     public id: number,

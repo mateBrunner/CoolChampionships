@@ -1,0 +1,24 @@
+<div class="container">
+
+  <div class="top-row">
+    <form
+      class="dynamic-form"
+      [formGroup]="checkForm">
+      <label *ngFor="let champ of inprogressChampionships" class="check-line">{{ champ.name }}
+        <input type="checkbox" formControlName="{{champ.name}}">
+        <span class="checkmark"></span>
+      </label>
+    </form>
+
+
+  </div>
+  <div class="bottom-row">
+    <div class="buttons">
+      <button (click)="save()" class="btn btn-success" [disabled]="inprogressChampionships.length === 0" >Save</button>
+      <button (click)="delete()" class="btn btn-danger">Delete table</button>
+    </div>
+  </div>
+
+</div>
+
+

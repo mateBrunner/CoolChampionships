@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChampionshipComponent } from './championship/championship.component';
-import { ProfileComponent } from './profile/profile.component';
 import {PlayoffComponent} from './playoff/playoff.component';
 import {ResultsComponent} from './results/results.component';
 import {Match, MatchesComponent} from './matches/matches.component';
 import {AppComponent} from './app.component';
 import {NewChampionshipComponent} from './new-championship/new-championship.component';
 import {InProgressChampionshipComponent} from './in-progress-championship/in-progress-championship.component';
+import {ArchiveComponent} from "./archive/archive.component";
+import {TablesComponent} from "./tables/tables.component";
 
 const routes: Routes = [
   { path: 'championship/:id', component: ChampionshipComponent, children: [
@@ -18,7 +19,8 @@ const routes: Routes = [
           { path: 'playoff', component: PlayoffComponent}
         ]},
     ]},
-  { path: 'profile', component: ProfileComponent}
+  { path: 'archive', component: ArchiveComponent},
+  { path: 'tables', component: TablesComponent}
 ]
 
 @NgModule({

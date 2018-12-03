@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { Chart } from 'chart.js';
-import {Player, PlayerInterface} from '../app.component';
+import {Participant, ParticipantInterface} from '../app.component';
 import {PlayersService} from '../players.service';
 
 @Component({
@@ -12,23 +12,21 @@ export class PlayerModalComponent implements OnInit {
 
   @Input() playerId: number;
   public dataChart;
-  public playerStats: PlayerStats;
+  public participantStats: ParticipantStats;
 
   constructor(private playerService: PlayersService) {
-    this.playerStats = new PlayerStats();
-    this.playerStats.player = new Player(-1, '', 0);
-    this.playerStats.mostPlayedPlayer = new Player(-1, '', 0);
+    this.participantStats = new ParticipantStats();
+    this.participantStats.participant = new Participant(-1, '', 0);
+    this.participantStats.mostPlayedParticipant = new Participant(-1, '', 0);
   }
 
   ngOnInit() {
 
-    this.playerService.getPlayerStats(this.playerId).subscribe((data) => {
-        this.playerStats = data;
-        console.log(typeof this.playerStats);
+    this.playerService.getParticipantStats(this.playerId).subscribe((data) => {
+        this.participantStats = data;
         this.createChart();
       }
     );
-
 
   }
 
@@ -40,7 +38,7 @@ export class PlayerModalComponent implements OnInit {
         labels: ['WIN', 'LOSE'],
         datasets: [
           {
-            data: [this.playerStats.numberOfWonMatches, this.playerStats.numberOfLosenMatches],
+            data: [this.participantStats.numberOfWonMatches, this.participantStats.numberOfLosenMatches],
             backgroundColor: [
               'rgba(25, 130, 8, 0.8)',
               'rgba(226, 41, 41, 0.8)'
@@ -57,23 +55,23 @@ export class PlayerModalComponent implements OnInit {
 
 }
 
-export class PlayerStats {
+export class ParticipantStats {
 
   constructor(
-    public player?: Player,
+    public participant?: Participant,
     public numberOfPlayedMatches?: number,
     public numberOfWonMatches?: number,
     public numberOfLosenMatches?: number,
     public mostWinInRow?: number,
     public mostLoseInRow?: number,
-    public mostPlayedPlayer?: Player,
-    public numberOfMatchesWithMostPlayedPlayer?: number,
-    public wonAgainstMostPlayedPlayer?: number,
+    public mostPlayedParticipant?: Participant,
+    public numberOfMatchesWithMostPlayedParticipant?: number,
+    public wonAgainstMostPlayedParticipant?: number,
     public dateOfFirstMatch?: string,
     public dateOfLastMatch?: string
   ) {}
 
-  getPlayer() {
+  getParticipant() {
   }
 
 }
