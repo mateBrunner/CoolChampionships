@@ -5,6 +5,7 @@
     <mat-progress-spinner *ngIf="spinner" mode="indeterminate"></mat-progress-spinner>
 
     <div class="box left-box mat-elevation-z10">
+
       <h5>Settings</h5>
       <div class="left-box-content">
         <form [formGroup]="newChampForm" (ngSubmit)="onSubmit()">
@@ -60,32 +61,53 @@
         </div>
         </form>
       </div>
+
     </div>
 
     <div class="box middle-box mat-elevation-z10">
-      <h5>Players</h5>
-      <p id="number-of-players">Number of players: <b>{{ selectedPlayers.length }}</b></p>
-      <div class="make-scrollable">
-        <div *ngFor="let player of selectedPlayers" class="player-line">
-          <p>{{player.name}}</p>
-          <button mat-button (click)="discardPlayer(player)"><i class="material-icons">clear</i></button>
+
+      <h5>Participants</h5>
+      <div class="middle-info">
+        <p id="number-of-players">Number of participants: <b>{{ selectedParticipants.length }}</b></p>
+        <button *ngIf="participantType === 'DOUBLE'" mat-button class="add-doubles" (click)="addDouble()"><i class="material-icons">add_box</i></button>
+      </div>
+      <div *ngIf="participantType != 'DOUBLE'" class="make-scrollable">
+        <div *ngFor="let participant of selectedParticipants" class="player-line">
+          <p>{{ participant.name }}</p>
+          <button mat-button (click)="discardParticipant(participant)"><i class="material-icons">clear</i></button>
         </div>
       </div>
+
+      <div *ngIf="participantType === 'DOUBLE'" class="make-scrollable">
+        <div *ngFor="let doubles of selectedParticipants" class="double-line">
+          <div *ngFor="let player of doubles.players" class="player-line">
+            <p>{{ player.name }}</p>
+            <button mat-button><i class="material-icons clear">clear</i></button>
+          </div>
+          <div *ngIf="doubles.players.length < 2">
+            <button mat-button (click)="addPlayerToDouble(doubles.id)" class="add-button"><i class="material-icons">add_box</i></button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="box right-box mat-elevation-z10">
-      <h5>Select players</h5>
+    <div *ngIf="showPlayers" class="box right-box mat-elevation-z10">
+
+      <h5>Select participants</h5>
       <div id="search_add">
-        <input class="form-control" placeholder="Search or Add player" [(ngModel)]="searchPlayer">
-        <button mat-button (click)="addPlayer()"><i class="material-icons">add_box</i></button>
+        <input class="form-control" placeholder="Search or Add participant" [(ngModel)]="searchParticipant">
+        <button mat-button (click)="addParticipant()"><i class="material-icons">add_box</i></button>
       </div>
       <div class="make-scrollable">
-        <div *ngFor="let player of filteredPlayers" class="player-line">
-            <p>{{player.name}}</p>
-            <button mat-button (click)="selectPlayer(player)"><i class="material-icons">add_box</i></button>
+        <div *ngFor="let participant of filteredParticipants" class="player-line">
+            <p>{{participant.name}}</p>
+            <button mat-button (click)="selectParticipant(participant)"><i class="material-icons">add_box</i></button>
         </div>
       </div>
+
     </div>
+    <div *ngIf="!showPlayers" class="fake-right-box"></div>
 
   </div>
 

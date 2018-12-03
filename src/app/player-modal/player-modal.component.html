@@ -2,31 +2,31 @@
 
   <div class="content">
 
-    <h2>{{ playerStats.player.name }}</h2>
+    <h2>{{ participantStats.participant.name }}</h2>
     <p></p>
-    <p>Strength: <b style="font-size: 25px">{{ playerStats.player.elo }}</b></p>
+    <p>Strength: <b style="font-size: 25px">{{ participantStats.participant.elo }}</b></p>
 
     <div class="body">
       <div class="left">
 
-        <p>Most win in a row: <b>{{ playerStats.mostWinInRow }}</b></p>
-        <p>Most lose in a row: <b>{{ playerStats.mostLoseInRow }}</b></p>
+        <p>Most win in a row: <b>{{ participantStats.mostWinInRow }}</b></p>
+        <p>Most lose in a row: <b>{{ participantStats.mostLoseInRow }}</b></p>
         <p>Most frequent opponent:
-          <b *ngIf="playerStats.mostPlayedPlayer">{{ playerStats.mostPlayedPlayer.name }} (W: {{ playerStats.wonAgainstMostPlayedPlayer }}, L: {{ playerStats.numberOfMatchesWithMostPlayedPlayer - playerStats.wonAgainstMostPlayedPlayer}})</b>
-          <b *ngIf="!playerStats.mostPlayedPlayer">-</b>
+          <b *ngIf="participantStats.mostPlayedParticipant">{{ participantStats.mostPlayedParticipant.name }} (W: {{ participantStats.wonAgainstMostPlayedParticipant }}, L: {{ participantStats.numberOfMatchesWithMostPlayedParticipant - participantStats.wonAgainstMostPlayedParticipant}})</b>
+          <b *ngIf="!participantStats.mostPlayedParticipant">-</b>
         </p>
         <p>First match:
-          <b *ngIf="playerStats.numberOfPlayedMatches === 0">-</b>
-          <b *ngIf="playerStats.numberOfPlayedMatches > 0">{{ playerStats.dateOfFirstMatch }}</b>
+          <b *ngIf="participantStats.numberOfPlayedMatches === 0">-</b>
+          <b *ngIf="participantStats.numberOfPlayedMatches > 0">{{ participantStats.dateOfFirstMatch }}</b>
         </p>
         <p>Last match:
-          <b *ngIf="playerStats.numberOfPlayedMatches === 0">-</b>
-          <b *ngIf="playerStats.numberOfPlayedMatches > 0">{{ playerStats.dateOfLastMatch }}</b>
+          <b *ngIf="participantStats.numberOfPlayedMatches === 0">-</b>
+          <b *ngIf="participantStats.numberOfPlayedMatches > 0">{{ participantStats.dateOfLastMatch }}</b>
         </p>
 
       </div>
       <div class="right">
-        <p>Played matches: <b>{{ playerStats.numberOfPlayedMatches }}</b></p>
+        <p>Played matches: <b>{{ participantStats.numberOfPlayedMatches }}</b></p>
         <canvas id="dataCanvas" height="250">{{ dataChart }}</canvas>
       </div>
     </div>

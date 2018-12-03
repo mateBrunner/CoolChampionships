@@ -1,10 +1,11 @@
 import {Component, Input, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {PlayersService} from '../players.service';
-import {ChampionshipData, ChampionshipDetails, Player} from '../app.component';
+import {ChampionshipData, ChampionshipDetails, Participant} from '../app.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ChampionshipService} from '../championship.service';
 import {MatSnackBar} from '@angular/material';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-new-championship',
@@ -16,27 +17,26 @@ export class NewChampionshipComponent implements OnInit {
   @Input() actualChampionships: ChampionshipData[] = [];
 
   public id;
-  navigationSubscription;
 
   public newChampForm: FormGroup;
   public formats = ['big-round', 'group'];
-
-  private allPlayers: Player[];
-  public filteredPlayers: Player[];
-  public selectedPlayers = [];
+  public participantType: string;
+  private allParticipants: Participant[];
+  public filteredParticipants: Participant[];
+  public selectedParticipants = [];
   public lastValidName: string;
   public spinner;
+  public showPlayers = false;
+  public selectedDoubleId: number;
 
-  public _searchPlayer = '';
-  set searchPlayer(value: string) {
-    this._searchPlayer = value;
-    this.filteredPlayers = this.filterPlayers();
+  public _searchParticipant = '';
+  set searchParticipant(value: string) {
+    this._searchParticipant = value;
+    this.filteredParticipants = this.filterParticipants();
   }
-  get searchPlayer(): string {
-    return this._searchPlayer;
+  get searchParticipant(): string {
+    return this._searchParticipant;
   }
-  public addPlayerError = null;
-
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -44,24 +44,13 @@ export class NewChampionshipComponent implements OnInit {
               private championshipService: ChampionshipService,
               private snackBar: MatSnackBar,
               private zone: NgZone) {
-
-    console.log('new championship constructor');
-
     this.id = +this.router.url.split('/')[2];
-
   }
 
   ngOnInit() {
-    this.getAllPlayers();
+    this.getAllParticipants();
     this.buildNewChampForm();
-    this.subscribeForChampionshipId();
-  }
-
-  getAllPlayers() {
-    this.playersService.getPlayers().subscribe((players) => {
-      this.allPlayers = players;
-      this.filteredPlayers = this.allPlayers;
-    });
+    this.getChampionshipSettings();
   }
 
   buildNewChampForm() {
@@ -77,7 +66,7 @@ export class NewChampionshipComponent implements OnInit {
     this.newChampForm.controls['format'].valueChanges.subscribe(params => { this.updateSliders(); });
   }
 
-  subscribeForChampionshipId() {
+  getChampionshipSettings() {
     this.championshipService.getChampionshipSettings(this.id).subscribe(
       (data) => {
         this.newChampForm.setValue({
@@ -88,30 +77,44 @@ export class NewChampionshipComponent implements OnInit {
           'sizeOfPlayoff': data.sizeOfPlayoff
         });
         this.lastValidName = this.newChampForm.controls['newChampName'].value;
-        this._searchPlayer = '';
-        this.getSelectedPlayers();
+        this.participantType = data.participantType;
+        this.getSelectedParticipants();
+        this.getAllParticipants();
+        this._searchParticipant = '';
+        if (this.participantType === 'DOUBLE') {
+          this.showPlayers = false;
+        } else {
+          this.showPlayers = true;
+        }
       }
     );
   }
 
-  getSelectedPlayers() {
-    this.playersService.getSelectedPlayers(this.id).subscribe(
-      (players) => {
-        this.selectedPlayers = players;
-        this.filteredPlayers = this.filterPlayers();
+  getAllParticipants() {
+    this.playersService.getParticipants(this.participantType).subscribe((participants) => {
+      this.allParticipants = participants;
+      this.filteredParticipants = this.allParticipants;
+    });
+  }
+
+  getSelectedParticipants() {
+    this.playersService.getSelectedParticipants(this.id).subscribe(
+      (participants) => {
+        this.selectedParticipants = participants;
+        this.filteredParticipants = this.filterParticipants();
         this.updateSliders();
       }
     );
   }
 
-  filterPlayers() {
-    return this.allPlayers.filter(player =>
-    player.name.toLowerCase().indexOf(this._searchPlayer.toLowerCase()) !== -1 && !this.isInSelected(player.name));
+  filterParticipants() {
+    return this.allParticipants.filter(participant =>
+    participant.name.toLowerCase().indexOf(this._searchParticipant.toLowerCase()) !== -1 && !this.isInSelected(participant.name));
   }
 
   isInSelected(value) {
-    for (const player of this.selectedPlayers) {
-      if (player.name === value) {
+    for (const participant of this.selectedParticipants) {
+      if (participant.name === value) {
         return true;
       }
     }
@@ -141,63 +144,84 @@ export class NewChampionshipComponent implements OnInit {
   }
 
   checkNumberOfGroups(control: FormControl): {[s: string]: boolean} {
-    if (this.selectedPlayers.length < 3 * control.value && this.newChampForm.get('format').value === 'group') {
-      return {'tooFewPlayers': true};
+    if (this.selectedParticipants.length < 3 * control.value && this.newChampForm.get('format').value === 'group') {
+      return {'tooFewParticipants': true};
     }
     return null;
   }
 
   checkNumberOfMatches(control: FormControl): {[s: string]: boolean} {
-    if (this.selectedPlayers.length <= control.value && this.newChampForm.get('format').value === 'big-round') {
+    if (this.selectedParticipants.length <= control.value && this.newChampForm.get('format').value === 'big-round') {
       return {'tooManyMatches': true};
     }
     return null;
   }
 
   checkSizeOfPlayoff(control: FormControl): {[s: string]: boolean} {
-    if (this.selectedPlayers.length < control.value) {
-      return {'tooFewPlayers': true};
+    if (this.selectedParticipants.length < control.value) {
+      return {'tooFewParticipants': true};
     }
     return null;
   }
 
-  selectPlayer(player: Player) {
-    this.selectedPlayers.push(player);
-    this.searchPlayer = '';
+  selectParticipant(participant: Participant) {
+    if (this.participantType === 'DOUBLE') {
+      this.championshipService.addPlayerToDouble(this.id, this.selectedDoubleId, participant.id).subscribe(
+        (response) => {
+          this.selectedParticipants = response;
+          this.showPlayers = false;
+        }
+      )
+    } else {
+      this.selectedParticipants.push(participant);
+      this.championshipService.selectParticipant(this.id, participant.id).subscribe(
+        (response) => null
+      );
+    }
+    this.searchParticipant = '';
     this.updateSliders();
+  }
 
-    this.championshipService.selectPlayer(this.id, player.id).subscribe(
+  discardParticipant(player: Participant) {
+    this.selectedParticipants.splice(this.selectedParticipants.indexOf(player), 1);
+    this.filteredParticipants = this.filterParticipants();
+    this.updateSliders();
+    this.championshipService.deselectParticipant(this.id, player.id).subscribe(
       (response) => null
     );
   }
 
-  discardPlayer(player: Player) {
-    this.selectedPlayers.splice(this.selectedPlayers.indexOf(player), 1);
-    this.filteredPlayers = this.filterPlayers();
-    this.updateSliders();
-
-    this.championshipService.deselectPlayer(this.id, player.id).subscribe(
-      (response) => null
-    );
+  addDouble() {
+    this.championshipService.addDouble(this.id).subscribe(
+      (response) => {
+        this.selectedParticipants = response;
+        this.updateSliders();
+      }
+    )
   }
 
-  addPlayer() {
-    if (this._searchPlayer.length < 3) {
+  addPlayerToDouble(doubleId: number) {
+    this.showPlayers = true;
+    this.selectedDoubleId = doubleId;
+  }
+
+  addParticipant() {
+    if (this._searchParticipant.length < 3) {
       this.showSnackBar('NAME IS TOO SHORT!');
     } else {
       let isValid = true;
-      for (const player of this.allPlayers ) {
-        if (player.name === this._searchPlayer ) {
+      for (const player of this.allParticipants ) {
+        if (player.name === this._searchParticipant ) {
           this.showSnackBar('NAME ALREADY EXISTS!');
           isValid = false;
           break;
         }
       }
       if (isValid) {
-        this.playersService.addPlayer(this._searchPlayer).subscribe(
+        this.playersService.addParticipant(this._searchParticipant).subscribe(
           (player) => {
-            this.allPlayers.push(player);
-            this.filteredPlayers = this.filterPlayers();
+            this.allParticipants.push(player);
+            this.filteredParticipants = this.filterParticipants();
           }
         );
       }
@@ -223,7 +247,6 @@ export class NewChampionshipComponent implements OnInit {
   onSubmit() {
     this.championshipService.startChampionship(this.id).subscribe(
       (response) =>
-
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
           this.router.navigate(['/championship/' + this.id ]))
     );

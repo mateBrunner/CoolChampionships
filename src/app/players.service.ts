@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BasicValue, Player} from './app.component';
+import {BasicValue, Participant} from './app.component';
 import {Observable} from 'rxjs';
-import {PlayerStats} from './player-modal/player-modal.component';
+import {ParticipantStats} from './player-modal/player-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +11,24 @@ export class PlayersService {
 
   constructor(private http: HttpClient) { }
 
-  public getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>('http://localhost:8100/players');
+  public getParticipants(type: string): Observable<Participant[]> {
+    if (type === 'TEAM') {
+      return this.http.get<Participant[]>('http://localhost:8100/teams');
+    } else {
+      return this.http.get<Participant[]>('http://localhost:8100/players');
+    }
   }
 
-  public getSelectedPlayers(id: number): Observable<Player[]> {
-    return this.http.get<Player[]>('http://localhost:8100/selected-players/' + id);
+  public getSelectedParticipants(id: number): Observable<Participant[]> {
+    return this.http.get<Participant[]>('http://localhost:8100/selected-participants/' + id);
   }
 
-  public addPlayer(name: string): Observable<Player> {
-    return this.http.post<Player>('http://localhost:8100/add-player', {'name': name});
+  public addParticipant(name: string): Observable<Participant> {
+    return this.http.post<Participant>('http://localhost:8100/add-player', {'name': name});
   }
 
-  public getPlayerStats(id: number): Observable<PlayerStats> {
-    return this.http.get<PlayerStats>('http://localhost:8100/player-stats/' + id);
+  public getParticipantStats(id: number): Observable<ParticipantStats> {
+    return this.http.get<ParticipantStats>('http://localhost:8100/participant-stats/' + id);
   }
 
 }

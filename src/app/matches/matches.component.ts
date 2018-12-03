@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatchesService} from '../matches.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Player} from '../app.component';
+import {Participant} from '../app.component';
 
 @Component({
   selector: 'app-matches',
@@ -35,8 +35,8 @@ export class Match {
 
   constructor(
     public id: number,
-    public player1: Player,
-    public player2: Player,
+    public participant1: Participant,
+    public participant2: Participant,
     public point1: number,
     public point2: number
   ) {}

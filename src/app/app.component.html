@@ -11,7 +11,8 @@
     </div>
 
     <div id="navbar_right">
-      <button mat-button routerLink="/profile">Archive</button>
+      <button mat-button routerLink="/tables">Tables</button>
+      <button mat-button routerLink="/archive">Archive</button>
     </div>
   </mat-toolbar>
   <div class="placeholder"></div>
@@ -32,11 +33,16 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="newChampModalForm" (ngSubmit)="onSubmit()" class="form-group">
-      <input type="text" formControlName="newChampName" class="form-control">
-      <div *ngIf="!newChampModalForm.get('newChampName').valid" class="alert alert-danger">
-        <span *ngIf="newChampModalForm.get('newChampName').errors['required']">Name is required!</span>
-        <span *ngIf="newChampModalForm.get('newChampName').errors['badName']">This name is in use!</span>
+      <input type="text" formControlName="name" class="form-control">
+      <div *ngIf="!newChampModalForm.get('name').valid" class="alert alert-danger">
+        <span *ngIf="newChampModalForm.get('name').errors['required']">Name is required!</span>
+        <span *ngIf="newChampModalForm.get('name').errors['badName']">This name is in use!</span>
       </div>
+      <mat-radio-group formControlName="type">
+        <mat-radio-button value="SINGLE" checked=true>Single</mat-radio-button>
+        <mat-radio-button value="DOUBLE">Double</mat-radio-button>
+        <mat-radio-button value="TEAM">Team</mat-radio-button>
+      </mat-radio-group>
     </form>
     <button type="submit" [disabled]="newChampModalForm.invalid" class="btn btn-success" (click)="createChampionship();modal.dismiss()">
       Create

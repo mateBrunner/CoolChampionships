@@ -10,6 +10,8 @@ export class SharedService {
 
   matchEdit: EventEmitter<any> = new EventEmitter();
 
+  tableDelete: EventEmitter<any> = new EventEmitter();
+
   constructor() { }
 
   matchEditEvent(result) {
@@ -18,4 +20,13 @@ export class SharedService {
   getMatchEdit() {
     return this.matchEdit;
   }
+
+  tableDeleteEvent() {
+    this.tableDelete.emit();
+  }
+  getTableDelete() {
+    return this.tableDelete;
+  }
+
+
 }

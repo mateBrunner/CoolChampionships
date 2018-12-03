@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MatchesService} from '../matches.service';
-import {Player, PlayerInterface} from '../app.component';
+import {Participant, ParticipantInterface} from '../app.component';
 import {Subscription} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MatchResultModalComponent} from '../match-result-modal/match-result-modal.component';
@@ -15,13 +15,11 @@ import {PlayerModalComponent} from '../player-modal/player-modal.component';
 export class BigroundMatchesComponent implements OnInit, OnDestroy {
 
   @Input() champId: number;
+
   private subscription: Subscription;
-
   public playerIds: number[] = [];
-
   public ELEMENT_DATA: MatchRows[] = [];
   public matchTable: MatchRows[] = [];
-
   public playerCount: number[] = [];
 
   displayedColumns: string[] = ['player', 'opponents']
@@ -43,7 +41,7 @@ export class BigroundMatchesComponent implements OnInit, OnDestroy {
 
     this.matchesService.getMatches(this.champId).subscribe(
       (data) => {
-        const players = data['playerList'];
+        const players = data['participantList'];
         const matches = data['matches'];
         const extraMatch = data['extraMatch'];
 
@@ -57,20 +55,20 @@ export class BigroundMatchesComponent implements OnInit, OnDestroy {
         }
 
         for (const match of matches) {
-          opponents[this.playerIds.indexOf(match.player1.id)].opponents.push(
-            new Opponent(match.id, match.player2.name, match.player2.id, match.point1, match.point2));
-          opponents[this.playerIds.indexOf(match.player2.id)].opponents.push(
-            new Opponent(match.id, match.player1.name, match.player1.id, match.point2, match.point1));
+          opponents[this.playerIds.indexOf(match.participant1.id)].opponents.push(
+            new Opponent(match.id, match.participant2.name, match.participant2.id, match.point1, match.point2));
+          opponents[this.playerIds.indexOf(match.participant2.id)].opponents.push(
+            new Opponent(match.id, match.participant1.name, match.participant1.id, match.point2, match.point1));
         }
 
         // extra match
 
         if (extraMatch) {
-          const extraPlayerRow = this.playerIds.indexOf(extraMatch.player.id);
+          const extraParticipantRow = this.playerIds.indexOf(extraMatch.participant.id);
           let i = 0;
-          while ( i < opponents[extraPlayerRow].opponents.length) {
-            if (opponents[extraPlayerRow].opponents[i].matchId === extraMatch.match.id) {
-              opponents[extraPlayerRow].opponents.splice(i, 1);
+          while ( i < opponents[extraParticipantRow].opponents.length) {
+            if (opponents[extraParticipantRow].opponents[i].matchId === extraMatch.match.id) {
+              opponents[extraParticipantRow].opponents.splice(i, 1);
               break;
             }
             i++;
@@ -81,17 +79,15 @@ export class BigroundMatchesComponent implements OnInit, OnDestroy {
           this.ELEMENT_DATA[j].opponents = opponents[j].opponents;
         }
         this.matchTable = this.ELEMENT_DATA;
-
-        console.log(this.matchTable);
       }
     );
   }
 
-  getPlayerFromOpponent(opponent: Opponent): Player {
-    return new Player(opponent.id, opponent.name);
+  getPlayerFromOpponent(opponent: Opponent): Participant {
+    return new Participant(opponent.id, opponent.name);
   }
 
-  openResultModal(player1: Player, player2: Player, matchId: number, point1: number, point2: number) {
+  openResultModal(player1: Participant, player2: Participant, matchId: number, point1: number, point2: number) {
     const modalRef = this.modalService.open(MatchResultModalComponent).componentInstance;
     modalRef.player1 = player1;
     modalRef.player2 = player2;
@@ -104,17 +100,15 @@ export class BigroundMatchesComponent implements OnInit, OnDestroy {
 
     this.matchesService.saveMatch(result).subscribe(response => null);
 
-    console.log(result);
-
-    for (const opponent of this.matchTable[this.playerIds.indexOf(result.player1_id)].opponents) {
-      if (opponent.id === result.player2_id) {
+    for (const opponent of this.matchTable[this.playerIds.indexOf(result.participant1_id)].opponents) {
+      if (opponent.id === result.participant2_id) {
         opponent.pointOwn = result.points.point1;
         opponent.pointOpp = result.points.point2;
       }
     }
 
-    for (const opponent of this.matchTable[this.playerIds.indexOf(result.player2_id)].opponents) {
-      if (opponent.id === result.player1_id) {
+    for (const opponent of this.matchTable[this.playerIds.indexOf(result.participant2_id)].opponents) {
+      if (opponent.id === result.participant1_id) {
         opponent.pointOwn = result.points.point2;
         opponent.pointOpp = result.points.point1;
       }
@@ -133,7 +127,7 @@ export class BigroundMatchesComponent implements OnInit, OnDestroy {
 }
 
 export interface MatchRows {
-  player: PlayerInterface;
+  player: ParticipantInterface;
   opponents?: Opponent[];
 }
 
@@ -159,8 +153,8 @@ export class Result {
 
   constructor(
     public matchId: number,
-    public player1_id: number,
-    public player2_id: number,
+    public participant1_id: number,
+    public participant2_id: number,
     public points: Points
   ) {}
 

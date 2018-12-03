@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SharedService} from '../shared.service';
-import {Player, PlayerInterface} from '../app.component';
+import {Participant, ParticipantInterface} from '../app.component';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatchesService} from '../matches.service';
 
@@ -12,8 +12,8 @@ import {MatchesService} from '../matches.service';
 })
 export class MatchResultModalComponent implements OnInit {
 
-  @Input() player1: Player;
-  @Input() player2: Player;
+  @Input() player1: Participant;
+  @Input() player2: Participant;
   @Input() matchId: number;
   @Input() point1: number;
   @Input() point2: number;
@@ -23,10 +23,9 @@ export class MatchResultModalComponent implements OnInit {
   public resultForm: FormGroup;
 
   constructor(public activeModal: NgbActiveModal,
-              private sharedService: SharedService,
-              private matchesService: MatchesService) {
-    this.player1 = new Player(-1,'', -1);
-    this.player2 = new Player(-1,'', -1);
+              private sharedService: SharedService) {
+    this.player1 = new Participant(-1,'', -1);
+    this.player2 = new Participant(-1,'', -1);
     this.matchId = -1;
   }
 
@@ -50,8 +49,8 @@ export class MatchResultModalComponent implements OnInit {
     this.sharedService.matchEditEvent(
       {
         'matchId': this.matchId,
-        'player1_id': +this.player1.id,
-        'player2_id': +this.player2.id,
+        'participant1_id': +this.player1.id,
+        'participant2_id': +this.player2.id,
         'points': this.resultForm.value});
     this.activeModal.close();
   }

@@ -33,12 +33,15 @@ export class AppComponent implements OnInit, OnDestroy {
         if (val.state.root.firstChild.url[0]['path'] === 'championship') {
           this.selectedId = val.state.root.firstChild.params['id'];
           console.log('hello');
+        } else {
+          this.selectedId = 0;
         }
       }
     });
 
     this.newChampModalForm = new FormGroup({
-      'newChampName': new FormControl('name', [Validators.required, this.checkNewChampName.bind(this)])
+      'name': new FormControl('name', [Validators.required, this.checkNewChampName.bind(this)]),
+      'type': new FormControl('SINGLE')
     });
 
   }
@@ -51,11 +54,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   open(content) {
+    this.newChampModalForm.controls['type'].setValue('SINGLE');
     this.modalService.open(content);
   }
 
   createChampionship() {
-    this.championshipService.createChampionship(this.newChampModalForm.get('newChampName').value).subscribe(
+    console.log(this.newChampModalForm.value);
+    this.championshipService.createChampionship(this.newChampModalForm.value).subscribe(
       (champ) => {
         this.actualChampionships.push(champ);
         this.router.navigate(['/championship/' + champ.id]);
@@ -87,7 +92,8 @@ export class ChampionshipData {
 
   constructor(
     public id: number,
-    public name: string
+    public name: string,
+    public type: string,
   ) {}
 
   getName() {
@@ -103,7 +109,8 @@ export class ChampionshipSettings {
     public format: string,
     public numberOfGroups: number,
     public numberOfMatches: number,
-    public sizeOfPlayoff: number
+    public sizeOfPlayoff: number,
+    public participantType: string
   ) {}
 
 }
@@ -135,7 +142,7 @@ export class BasicValue {
 export class FilterObject {
   constructor(
     public name: string,
-    public selectedPlayers: Player[]
+    public selectedParticipants: Participant[]
   ) {}
 
   getName() {
@@ -148,12 +155,13 @@ export class FilterObject {
 
 }
 
-export class Player {
+export class Participant {
 
   constructor(
     public id: number,
     public name: string,
-    public elo?: number
+    public elo?: number,
+    public players?: Participant[]
   ) {}
 
   public getName() {
@@ -162,7 +170,7 @@ export class Player {
 
 }
 
-export class PlayerInterface {
+export class ParticipantInterface {
 
   id: number;
   name: string;

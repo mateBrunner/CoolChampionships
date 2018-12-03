@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatchesService} from '../matches.service';
-import {PlayerInterface} from '../app.component';
+import {ParticipantInterface} from '../app.component';
 
 @Component({
   selector: 'app-biground-results',
@@ -24,15 +24,14 @@ export class BigroundResultsComponent implements OnInit {
     this.matchesService.getResult(this.champId).subscribe( data => {
 
       let iterator = 0;
-      const playerResults = data['playerResults'];
-      this.sizeOfPlayoff = data['sizeOfPlayoff']
+      const playerResults = data['participantResults'];
+      this.sizeOfPlayoff = data['sizeOfPlayoff'];
 
       while (iterator < playerResults.length) {
         this.ELEMENT_DATA[iterator] = playerResults[iterator];
         this.ELEMENT_DATA[iterator].ranking = iterator + 1;
         iterator++;
       }
-
       this.resultTable = this.ELEMENT_DATA;
 
     });
@@ -47,7 +46,7 @@ export class BigroundResultsComponent implements OnInit {
 
 export interface ResultRows {
   ranking?: number;
-  player: PlayerInterface;
+  participant: ParticipantInterface;
   numberOfPlayedMatches: number;
   numberOfWonMatches: number;
   numberOfWonSets: number;

@@ -19,6 +19,10 @@ export class ChampionshipService {
     return this.http.get<ChampionshipData[]>('http://localhost:8100/actual-championships');
   }
 
+  public getInProgressChampionships(): Observable<ChampionshipData[]> {
+    return this.http.get<ChampionshipData[]>('http://localhost:8100/inprogress-championships');
+  }
+
   public getChampionshipSettings(id: number): Observable<ChampionshipSettings> {
     return this.http.get<ChampionshipSettings>('http://localhost:8100/championship-settings/' + id);
   }
@@ -30,18 +34,28 @@ export class ChampionshipService {
     return this.http.post<BasicValue>('http://localhost:8100/update-championship-settings/' + id,{'settings': data});
   }
 
-  public selectPlayer(champId: number, playerId: number): Observable<BasicValue> {
-    const data = new ChampPlayerObject(champId, playerId);
-    return this.http.post<BasicValue>('http://localhost:8100/select-player', {'data': data});
+  public addDouble(champId: number): any {
+    return this.http.post('http://localhost:8100/add-double', {'data': champId});
   }
 
-  public deselectPlayer(champId: number, playerId: number): Observable<BasicValue> {
-    const data = new ChampPlayerObject(champId, playerId);
-    return this.http.post<BasicValue>('http://localhost:8100/deselect-player', {'data': data});
+  public addPlayerToDouble(champId: number, doubleId: number, playerId: number): any {
+    const data = new DoubleParticipantObject(champId, doubleId, playerId);
+    return this.http.post('http://localhost:8100/add-player-to-double', {'data': data});
   }
 
-  public createChampionship(name: string): Observable<ChampionshipData> {
-    return this.http.post<ChampionshipData>('http://localhost:8100/championship', {'name': name});
+
+  public selectParticipant(champId: number, participantId: number): Observable<BasicValue> {
+    const data = new ChampParticipantObject(champId, participantId);
+    return this.http.post<BasicValue>('http://localhost:8100/select-participant', {'data': data});
+  }
+
+  public deselectParticipant(champId: number, participantId: number): Observable<BasicValue> {
+    const data = new ChampParticipantObject(champId, participantId);
+    return this.http.post<BasicValue>('http://localhost:8100/deselect-participant', {'data': data});
+  }
+
+  public createChampionship(data: ChampionshipData): Observable<ChampionshipData> {
+    return this.http.post<ChampionshipData>('http://localhost:8100/championship', {'data': data});
   }
 
   public startChampionship(champId: number): Observable<BasicValue> {
@@ -58,11 +72,11 @@ export class ChampionshipService {
 
 }
 
-class ChampPlayerObject{
+class ChampParticipantObject{
 
   constructor(
     public champId: number,
-    public playerId: number
+    public participantId: number
   ) {}
 
   getChampId() {
@@ -70,7 +84,29 @@ class ChampPlayerObject{
   }
 
   getPlayerId() {
-    return this.playerId;
+    return this.participantId;
+  }
+
+}
+
+class DoubleParticipantObject{
+
+  constructor(
+    public champId: number,
+    public doubleId: number,
+    public participantId: number
+  ) {}
+
+  getChampId() {
+    return this.champId;
+  }
+
+  getDoubleId() {
+    return this.champId;
+  }
+
+  getParticipantId() {
+    return this.participantId;
   }
 
 }

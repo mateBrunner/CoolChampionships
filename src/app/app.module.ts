@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ChampionshipComponent } from './championship/championship.component';
-import { ProfileComponent } from './profile/profile.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,12 +11,13 @@ import {
   MatButtonModule, MatCheckboxModule, MatToolbarModule, MatInputModule,
   MatSliderModule, MatSnackBarModule, MatProgressSpinnerModule
 } from '@angular/material';
+import {MatRadioModule} from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material';
 import { InProgressChampionshipComponent } from './in-progress-championship/in-progress-championship.component';
 import { NewChampionshipComponent } from './new-championship/new-championship.component';
 import { PlayersService } from './players.service';
-import { PlayerFilterPipe } from './player-filter.pipe';
+import { ParticipantFilterPipe } from './participant-filter.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedService } from './shared.service';
 import { ResultsComponent } from './results/results.component';
@@ -30,16 +30,19 @@ import { BigroundResultsComponent } from './biground-results/biground-results.co
 import { GroupResultsComponent } from './group-results/group-results.component';
 import { PlayerModalComponent } from './player-modal/player-modal.component';
 import { ChartsModule} from 'ng2-charts';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import 'hammerjs';
+import { ArchiveComponent } from './archive/archive.component';
+import { TablesComponent } from './tables/tables.component';
+import { TableSettingsModalComponent } from './table-settings-modal/table-settings-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChampionshipComponent,
-    ProfileComponent,
     InProgressChampionshipComponent,
     NewChampionshipComponent,
-    PlayerFilterPipe,
+    ParticipantFilterPipe,
     ResultsComponent,
     PlayoffComponent,
     MatchesComponent,
@@ -49,7 +52,10 @@ import 'hammerjs';
     BigroundResultsComponent,
     GroupResultsComponent,
     PlayerModalComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ArchiveComponent,
+    TablesComponent,
+    TableSettingsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -64,19 +70,22 @@ import 'hammerjs';
     MatSliderModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
     NgbModule,
     NgbModalModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    ChartsModule
+    ChartsModule,
+    DragDropModule
   ],
   exports: [
     NgbModalModule,
     MatInputModule,
     MatFormFieldModule,
     MatTableModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatRadioModule
   ],
   schemas: [
     NO_ERRORS_SCHEMA
@@ -87,7 +96,8 @@ import 'hammerjs';
   bootstrap: [AppComponent],
   entryComponents: [
     MatchResultModalComponent,
-    PlayerModalComponent
+    PlayerModalComponent,
+    TableSettingsModalComponent
   ]
 })
 export class AppModule { }
