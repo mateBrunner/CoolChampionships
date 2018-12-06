@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/index";
-import {Table} from "./tables/tables.component";
+import {Table, TableMatch} from "./tables/tables.component";
 import {ChampionshipData} from "./app.component";
+import {Match} from "./matches/matches.component";
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,18 @@ export class TablesService {
     return this.http.get('http://localhost:8100/delete-table/' + tableId);
   }
 
+  public clearTable(tableId: number): any {
+    return this.http.get('http://localhost:8100/clear-table/' + tableId);
+  }
+
   public newTable(table: Table): any {
     return this.http.post('http://localhost:8100/new-table',
       {'col': table.col,
              'row': table.row})
+  }
+
+  public getRandomMatch(tableId: number): Observable<TableMatch> {
+    return this.http.get<TableMatch>('http://localhost:8100/random-match/' + tableId);
   }
 
 }

@@ -56,6 +56,13 @@ export class TableSettingsModalComponent implements OnInit {
     );
   }
 
+  clear() {
+    this.tablesService.clearTable(this.tableId).subscribe((resp) => {
+      this.activeModal.close();
+      this.sharedService.tableDeleteEvent();
+    })
+  }
+
   delete() {
     this.tablesService.deleteTable(this.tableId).subscribe((resp) => {
         this.activeModal.close();

@@ -70,6 +70,10 @@ export class ChampionshipService {
     return this.http.post('http://localhost:8100/delete-championship/' + champId, {});
   }
 
+  public championshipChances(champId: number): any {
+    return this.http.get('http://localhost:8100/championship-chances/' + champId);
+  }
+
 }
 
 class ChampParticipantObject{

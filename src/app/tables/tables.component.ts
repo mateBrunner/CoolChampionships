@@ -8,6 +8,9 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {TableSettingsModalComponent} from "../table-settings-modal/table-settings-modal.component";
 import {SharedService} from "../shared.service";
 import {Subscription} from "rxjs/internal/Subscription";
+import {Result} from "../biground-matches/biground-matches.component";
+import {PlayoffResult} from "../playoff/playoff.component";
+import {MatchesService} from "../matches.service";
 
 @Component({
   selector: 'app-tables',
@@ -23,13 +26,18 @@ export class TablesComponent implements OnInit, OnDestroy {
   public numberOfColumns: number;
   private inprogressChampionships;
   private subscription: Subscription;
+  private saveResultSubscription: Subscription;
 
   constructor(private modalService: NgbModal,
               private tablesService: TablesService,
               private championshipService: ChampionshipService,
-              private sharedService: SharedService) {
+              private sharedService: SharedService,
+              private matchesService: MatchesService) {
     this.subscription = this.sharedService.getTableDelete().subscribe(resp =>
       this.ngOnInit()
+    );
+    this.saveResultSubscription = this.sharedService.getMatchEdit().subscribe(result =>
+      this.saveResult(result)
     );
 
 
@@ -42,6 +50,7 @@ export class TablesComponent implements OnInit, OnDestroy {
 
     this.tableGrid = [];
     this.tablesService.getTables().subscribe((tables) => {
+      console.log(tables);
       this.numberOfColumns = 0;
       this.numberOfRows = 0;
       for (const table of tables) {
@@ -61,10 +70,20 @@ export class TablesComponent implements OnInit, OnDestroy {
       }
 
       for (const table of tables) {
+        if (table.tableMatch === null) {
+          table.tableMatch = new TableMatch(null, new Match(null, new Participant(null, null), new Participant(null, null),null, null))
+        }
         this.tableGrid[table.row][table.col] = table;
       }
     });
 
+  }
+
+  openEditResult(participant1: Participant, participant2: Participant, matchId: number) {
+    const modalRef = this.modalService.open(MatchResultModalComponent).componentInstance;
+    modalRef.player1 = participant1;
+    modalRef.player2 = participant2;
+    modalRef.matchId = matchId;
   }
 
   openSettings(tableId: number) {
@@ -78,11 +97,36 @@ export class TablesComponent implements OnInit, OnDestroy {
   }
 
   randomMatch(table: Table) {
-    this.tableGrid[table.row][table.col].match = new Match(2,new Participant(1,'asdf'), new Participant(1, 'jké'), 2,1);
+    this.tablesService.getRandomMatch(table.id).subscribe((match) => {
+      if (match != null) {
+        this.tableGrid[table.row][table.col].tableMatch = match;
+      }}
+    )
+
+  }
+
+  saveResult(result: Result) {
+    let champId: number;
+    let r = 0;
+    while ( r <= this.numberOfRows ) {
+      let c = 0;
+      while ( c <= this.numberOfColumns ) {
+        if (this.tableGrid[r][c].tableMatch != null && this.tableGrid[r][c].tableMatch.match.id === result.matchId) {
+          champId = this.tableGrid[r][c].tableMatch.champId;
+        }
+        c++;
+      }
+      r++;
+    }
+
+    this.matchesService.saveTableMatch(champId, result).subscribe(response =>
+    this.ngOnInit()
+    );
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.saveResultSubscription.unsubscribe();
   }
 
 }
@@ -93,7 +137,16 @@ export class Table {
     public id: number,
     public row: number,
     public col: number,
-    public match?: Match
+    public tableMatch?: TableMatch
+  ) {}
+
+}
+
+export class TableMatch {
+
+  constructor(
+    public champId: number,
+    public match: Match
   ) {}
 
 }

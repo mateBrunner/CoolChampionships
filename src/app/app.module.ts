@@ -35,6 +35,7 @@ import 'hammerjs';
 import { ArchiveComponent } from './archive/archive.component';
 import { TablesComponent } from './tables/tables.component';
 import { TableSettingsModalComponent } from './table-settings-modal/table-settings-modal.component';
+import { ChancesComponent } from './chances/chances.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { TableSettingsModalComponent } from './table-settings-modal/table-settin
     PageNotFoundComponent,
     ArchiveComponent,
     TablesComponent,
-    TableSettingsModalComponent
+    TableSettingsModalComponent,
+    ChancesComponent
   ],
   imports: [
     BrowserModule,

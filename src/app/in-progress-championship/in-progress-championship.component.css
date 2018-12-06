@@ -34,6 +34,10 @@ button:hover {
   top: 230px;
 }
 
+#chances-button {
+  top: 320px;
+}
+
 #archive-button {
   top: 430px;
   background-color: darkred;
@@ -58,6 +62,10 @@ button:hover {
   max-height: 50px;
   margin-top: 2px;
   margin-left: 6px;
+}
+
+#chances-button img {
+  max-height: 30px;
 }
 
 #delete-button img {

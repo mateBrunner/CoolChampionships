@@ -9,6 +9,7 @@ import {NewChampionshipComponent} from './new-championship/new-championship.comp
 import {InProgressChampionshipComponent} from './in-progress-championship/in-progress-championship.component';
 import {ArchiveComponent} from "./archive/archive.component";
 import {TablesComponent} from "./tables/tables.component";
+import {ChancesComponent} from "./chances/chances.component";
 
 const routes: Routes = [
   { path: 'championship/:id', component: ChampionshipComponent, children: [
@@ -16,7 +17,8 @@ const routes: Routes = [
       { path: 'inprogress', component: InProgressChampionshipComponent, children: [
           { path: 'matches', component: MatchesComponent},
           { path: 'results', component: ResultsComponent},
-          { path: 'playoff', component: PlayoffComponent}
+          { path: 'playoff', component: PlayoffComponent},
+          { path: 'chances', component: ChancesComponent}
         ]},
     ]},
   { path: 'archive', component: ArchiveComponent},

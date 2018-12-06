@@ -24,6 +24,12 @@ export class MatchesService {
     return this.http.post('http://localhost:8100/save-match', {'result': result});
   }
 
+  public saveTableMatch(champId: number, result: Result): any {
+    console.log(champId);
+    console.log(typeof champId)
+    return this.http.post('http://localhost:8100/save-table-match/' + champId, {'result': result})
+  }
+
   public savePlayoffMatch(result: PlayoffResult): any {
     return this.http.post('http://localhost:8100/save-playoff-match', {'result': result});
   }

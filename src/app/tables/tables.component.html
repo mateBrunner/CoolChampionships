@@ -6,13 +6,16 @@
       <div *ngFor="let row of tableGrid" class="table-row">
         <div *ngFor="let table of row">
           <div *ngIf="table.id != -1" class="box table-box mat-elevation-z10">
-            <h5 *ngIf="table.match != null">{{table.match.participant1.name}}</h5>
-            <h5 *ngIf="table.match === null"></h5>
+            <h5 *ngIf="table.tableMatch.match.id != null">{{table.tableMatch.match.participant1.name}}</h5>
+            <h5 *ngIf="table.tableMatch.match.id === null"></h5>
             <img src="assets/table.png">
-            <h5 *ngIf="table.match != null">Janó</h5>
-            <img *ngIf="table.match != null" class="ball" src="assets/ball.gif">
+            <h5 *ngIf="table.tableMatch.match.id != null">{{table.tableMatch.match.participant2.name}}</h5>
+            <img *ngIf="table.tableMatch.match.id != null" class="ball" src="assets/ball.gif">
             <button mat-button class="new-match table-button" (click)="randomMatch(table)"><i class="material-icons">autorenew</i></button>
-            <button *ngIf="table.match != null" mat-button class="edit-points table-button"><i class="material-icons">edit</i></button>
+            <button *ngIf="table.tableMatch.match.id != null" mat-button class="edit-points table-button"
+                    (click)="openEditResult(table.tableMatch.match.participant1, table.tableMatch.match.participant2, table.tableMatch.match.id)">
+              <i class="material-icons">edit</i>
+            </button>
             <button mat-button class="settings-button table-button" (click)="openSettings(table.id)"><i class="material-icons">settings</i></button>
           </div>
           <div *ngIf="table.id === -1" class="box fake-box">
@@ -29,23 +32,5 @@
       <button mat-button class="new-button"><i class="material-icons">add_box</i></button>
     </div>
   </div>
-
-  <!--
-
-  <div class="table-box mat-elevation-z10">
-
-  </div>
-  <div class="table-box mat-elevation-z10">
-    <h5>Zoli</h5>
-    <img src="assets/table.png">
-    <h5>Ágoston</h5>
-  </div>
-  <div class="table-box mat-elevation-z10">
-    <h5>Gyuszika</h5>
-    <img src="assets/table.png">
-    <h5>Bélus</h5>
-  </div>
-  -->
-
 
 </div>
